@@ -94,3 +94,33 @@ The repository must always remain in a runnable state.
 Agents must prioritize repository stability over task completion.
 
 If validation cannot be performed, the agent must refuse to commit changes.
+
+## Dependency Installation Limitations
+
+Some agent environments cannot access the npm registry and therefore cannot execute:
+
+npm install
+npm run lint
+npm run build
+npm run dev
+
+In these environments the agent must NOT attempt to run npm commands.
+
+Instead the agent must:
+
+* perform static code validation only
+* ensure file structure is correct
+* ensure configuration files are valid
+* ensure TypeScript and Next.js code structure is correct
+
+The agent must assume dependency installation will be performed locally by the user.
+
+## Commit Behavior
+
+If the environment blocks npm installation, the agent may still commit changes provided that:
+
+* the changes are configuration or source code only
+* no dependency changes are introduced
+* the project structure remains valid
+
+The agent must clearly inform the user that runtime validation must be executed locally.
