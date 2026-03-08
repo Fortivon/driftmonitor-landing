@@ -16,6 +16,17 @@ const flowSteps = [
   "Breaking changes trigger alerts",
 ];
 
+const credibilityItems = [
+  "Multi-tenant architecture",
+  "Manual monitor execution",
+  "JSON schema snapshots",
+  "Drift detection",
+  "Snapshot history",
+  "Drift analytics",
+  "Alert pipeline",
+  "Stripe billing in test mode",
+];
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const [apis, setApis] = useState("");
@@ -101,6 +112,27 @@ export default function Home() {
           <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
             DriftMonitor compares response schemas over time and alerts you when fields are removed or types change.
           </p>
+        </section>
+
+        <section className="space-y-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Already working</p>
+          <h2 className="max-w-3xl text-2xl font-semibold leading-tight sm:text-3xl">
+            Built for real API monitoring workflows
+          </h2>
+          <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            DriftMonitor is already running in the cloud and supports the core workflow needed to detect schema drift in
+            external APIs.
+          </p>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {credibilityItems.map((item) => (
+              <li
+                key={item}
+                className="rounded-md border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className="rounded-lg border border-slate-200 bg-slate-50 px-6 py-10 text-center sm:px-10">
