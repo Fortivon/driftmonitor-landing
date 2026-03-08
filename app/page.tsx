@@ -104,6 +104,7 @@ export default function Home() {
               <input
                 id="email"
                 type="email"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
@@ -118,6 +119,7 @@ export default function Home() {
               <input
                 id="apis"
                 type="text"
+                placeholder="Stripe, Shopify, Slack, OpenAI..."
                 value={apis}
                 onChange={(event) => setApis(event.target.value)}
                 required
