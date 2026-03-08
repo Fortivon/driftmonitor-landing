@@ -6,12 +6,19 @@ export const metadata: Metadata = {
   title: "DriftMonitor – Detect breaking changes in external APIs",
   description:
     "Monitor API responses, detect JSON schema drift, and catch breaking changes before they reach production.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "DriftMonitor – Detect breaking changes in external APIs",
     description:
       "Monitor API responses, detect JSON schema drift, and catch breaking changes before they reach production.",
+    url: "https://driftmonitor.app",
+    siteName: "DriftMonitor",
+    type: "website",
   },
   twitter: {
+    card: "summary_large_image",
     title: "DriftMonitor – Detect breaking changes in external APIs",
     description:
       "Monitor API responses, detect JSON schema drift, and catch breaking changes before they reach production.",
