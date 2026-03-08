@@ -1,3 +1,7 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+
 const problemPoints = [
   "Fields disappear",
   "Types change",
@@ -13,6 +17,17 @@ const flowSteps = [
 ];
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [apis, setApis] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    console.log({ email, apis });
+    setShowSuccessMessage(true);
+  };
+
   return (
     <main className="min-h-screen bg-white px-6 py-16 text-slate-900 sm:px-8 lg:px-12">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-20">
@@ -80,9 +95,47 @@ export default function Home() {
           <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
             DriftMonitor is currently in private alpha. We are looking for a few developers who integrate external APIs.
           </p>
-          <button className="mt-6 rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700">
-            Request Alpha Access
-          </button>
+
+          <form onSubmit={handleSubmit} className="mx-auto mt-8 flex w-full max-w-xl flex-col gap-5 text-left">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-sm font-medium text-slate-700">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+                className="rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label htmlFor="apis" className="text-sm font-medium text-slate-700">
+                Which APIs do you integrate with?
+              </label>
+              <input
+                id="apis"
+                type="text"
+                value={apis}
+                onChange={(event) => setApis(event.target.value)}
+                required
+                className="rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+            >
+              Request Alpha Access
+            </button>
+
+            {showSuccessMessage ? (
+              <p className="text-sm text-emerald-700">Thanks! We&apos;ll contact you soon.</p>
+            ) : null}
+          </form>
         </section>
       </div>
     </main>

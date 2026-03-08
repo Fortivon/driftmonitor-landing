@@ -1,126 +1,117 @@
-# Agent Development Rules
+# AGENTS.md
 
-This repository contains a Next.js landing page project.
+## Project Overview
 
-Agents MUST verify the project builds and runs successfully before committing any changes.
+This repository contains the landing page for **DriftMonitor**.
 
-## Mandatory validation steps before commit
+DriftMonitor is a developer tool that detects **breaking changes in external APIs** by monitoring endpoint responses and comparing JSON schema snapshots.
 
-Agents must run the following commands:
+This repository only contains the **marketing / landing website**.
+
+The API backend exists in a separate repository.
+
+---
+
+## Tech Stack
+
+This project uses:
+
+* Next.js (App Router)
+* TypeScript
+* TailwindCSS
+
+The project is designed to be deployed on **Vercel**.
+
+---
+
+## Project Structure
+
+Key directories:
+
+/app
+layout.tsx
+page.tsx
+globals.css
+
+/components
+/public
+
+The landing page content is primarily implemented in:
+
+/app/page.tsx
+
+---
+
+## Agent Responsibilities
+
+Agents may help with:
+
+* editing landing page content
+* improving layout and styling
+* adding components
+* improving developer-focused messaging
+* implementing simple UI features
+
+Agents should keep the implementation **minimal and clean**.
+
+Avoid adding unnecessary dependencies.
+
+---
+
+## Design Principles
+
+The landing page targets **backend and API developers**.
+
+Design must remain:
+
+* minimal
+* technical
+* developer-focused
+
+Avoid heavy animations or complex UI frameworks.
+
+Prefer simple Tailwind layouts.
+
+---
+
+## Dependency Installation Limitation
+
+Some agent environments cannot access the npm registry.
+
+In these environments the following commands will fail:
 
 npm install
-
 npm run dev
-
+npm run build
 npm run lint
 
-If a build script exists, also run:
+Agents must not rely on executing these commands.
 
-npm run build
+Instead agents should focus on:
 
-## Requirements
+* correct file structure
+* valid Next.js code
+* clean TypeScript
+* proper Tailwind usage
 
-The agent MUST ensure:
+Runtime validation will be performed by the user locally.
 
-* dependencies install without errors
-* Next.js starts successfully
-* there are no runtime crashes
-* lint passes without blocking errors
+---
 
-## If a command fails
+## Commit Guidelines
 
-If any command fails:
+Agents may commit changes when:
 
-* the agent MUST fix the issue
-* the agent MUST NOT commit broken code
-* the agent MUST retry the validation commands
+* modifications are limited to source code or configuration
+* no breaking structural changes are introduced
+* code follows the existing project structure
 
-## Environment constraints
+Avoid large refactors.
 
-If the execution environment blocks dependency installation (for example registry restrictions), the agent MUST:
+Keep commits focused and small.
 
-* detect the limitation
-* explain that validation cannot be completed
-* avoid committing changes that cannot be verified
-
-## Commit policy
-
-Agents are NOT allowed to commit code that has not passed the validation steps.
-
-Commits must only happen after the project is confirmed to run successfully.
+---
 
 ## Goal
 
-The repository must always remain in a runnable state.
-
-## Mandatory Validation Policy
-
-Before committing any code, the agent MUST successfully run:
-
-npm install
-npm run lint
-npm run build
-npm run dev (must start without runtime errors)
-
-The agent must confirm that these commands execute successfully.
-
-## Environment Limitations
-
-If the environment blocks dependency installation (for example npm registry restrictions, 403 errors, or offline environments):
-
-The agent MUST NOT commit code.
-
-Instead the agent must:
-
-* stop the task
-* explain that validation could not be completed
-* ask the user to run the commands locally
-
-## Commit Permission
-
-Agents are strictly forbidden from committing code if validation steps cannot be executed.
-
-Commits are only allowed when:
-
-* dependencies install successfully
-* lint passes
-* the project builds
-* the application starts correctly
-
-## Repository Integrity Rule
-
-The repository must always remain in a runnable state.
-
-Agents must prioritize repository stability over task completion.
-
-If validation cannot be performed, the agent must refuse to commit changes.
-
-## Dependency Installation Limitations
-
-Some agent environments cannot access the npm registry and therefore cannot execute:
-
-npm install
-npm run lint
-npm run build
-npm run dev
-
-In these environments the agent must NOT attempt to run npm commands.
-
-Instead the agent must:
-
-* perform static code validation only
-* ensure file structure is correct
-* ensure configuration files are valid
-* ensure TypeScript and Next.js code structure is correct
-
-The agent must assume dependency installation will be performed locally by the user.
-
-## Commit Behavior
-
-If the environment blocks npm installation, the agent may still commit changes provided that:
-
-* the changes are configuration or source code only
-* no dependency changes are introduced
-* the project structure remains valid
-
-The agent must clearly inform the user that runtime validation must be executed locally.
+Maintain a simple, clear, developer-focused landing page that explains DriftMonitor and helps capture early alpha testers.
