@@ -76,17 +76,30 @@ export default function Home() {
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold sm:text-3xl">Example schema drift</h2>
           <div className="grid gap-4 lg:grid-cols-2">
-            <div className="rounded-md border border-slate-200 bg-slate-50 p-5">
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-5">
               <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Baseline schema</p>
-              <pre className="font-mono text-sm leading-6 text-slate-800">{`user.id: string\nuser.name: string`}</pre>
+              <div className="rounded-md border border-slate-200 bg-white p-4 font-mono text-sm leading-6 text-slate-800">
+                <p>user.id: string</p>
+                <p>user.name: string</p>
+                <p>user.email: string</p>
+              </div>
             </div>
-            <div className="rounded-md border border-rose-200 bg-rose-50 p-5">
+            <div className="rounded-lg border border-rose-200 bg-rose-50 p-5">
               <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-rose-500">New response</p>
-              <pre className="font-mono text-sm leading-6 text-slate-800">{`user.id: number   ❌ breaking change`}</pre>
+              <div className="rounded-md border border-rose-200 bg-white p-4 font-mono text-sm leading-6 text-slate-800">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-rose-700">
+                  <p className="font-semibold">user.id: number</p>
+                  <span className="rounded-full border border-rose-300 bg-rose-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-rose-700">
+                    breaking change
+                  </span>
+                </div>
+                <p>user.name: string</p>
+                <p>user.email: string</p>
+              </div>
             </div>
           </div>
           <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            DriftMonitor detects this automatically, so you can respond before a schema change impacts production traffic.
+            DriftMonitor compares response schemas over time and alerts you when fields are removed or types change.
           </p>
         </section>
 
