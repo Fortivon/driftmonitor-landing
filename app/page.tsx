@@ -36,6 +36,11 @@ export default function Home() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
     setShowSuccessMessage(false);
     setErrorMessage("");
     setIsSubmitting(true);
@@ -46,7 +51,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, apis }),
+        body: JSON.stringify({ email: email.trim(), apis: apis.trim() }),
       });
 
       if (!response.ok) {
