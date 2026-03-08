@@ -16,6 +16,17 @@ const flowSteps = [
   "Breaking changes trigger alerts",
 ];
 
+const credibilityItems = [
+  "Multi-tenant architecture",
+  "Manual monitor execution",
+  "JSON schema snapshots",
+  "Drift detection",
+  "Snapshot history",
+  "Drift analytics",
+  "Alert pipeline",
+  "Stripe billing in test mode",
+];
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const [apis, setApis] = useState("");
@@ -103,11 +114,37 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="rounded-lg border border-slate-200 bg-slate-50 px-6 py-10 text-center sm:px-10">
-          <h2 className="text-2xl font-semibold sm:text-3xl">Looking for developers to test the Alpha</h2>
-          <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            DriftMonitor is currently in private alpha. We are looking for a few developers who integrate external APIs.
+        <section className="space-y-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Already working</p>
+          <h2 className="max-w-3xl text-2xl font-semibold leading-tight sm:text-3xl">
+            Built for real API monitoring workflows
+          </h2>
+          <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            DriftMonitor is already running in the cloud and supports the core workflow needed to detect schema drift in
+            external APIs.
           </p>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {credibilityItems.map((item) => (
+              <li
+                key={item}
+                className="rounded-md border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-slate-50 px-6 py-10 text-center sm:px-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Private Alpha</p>
+          <h2 className="mx-auto mt-3 max-w-3xl text-2xl font-semibold leading-tight sm:text-3xl">
+            Looking for developers who integrate external APIs
+          </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            DriftMonitor is currently in private alpha. I&apos;m looking for a small group of developers to test it with
+            real API integrations and share feedback.
+          </p>
+          <p className="mt-3 text-xs text-slate-500 sm:text-sm">Current access is API-only via Swagger.</p>
 
           <form onSubmit={handleSubmit} className="mx-auto mt-8 flex w-full max-w-xl flex-col gap-5 text-left">
             <div className="flex flex-col gap-2">
