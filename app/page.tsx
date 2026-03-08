@@ -31,12 +31,37 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [apis, setApis] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setShowSuccessMessage(false);
+    setErrorMessage("");
+    setIsSubmitting(true);
 
-    console.log({ email, apis });
-    setShowSuccessMessage(true);
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, apis }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
+      setShowSuccessMessage(true);
+      setEmail("");
+      setApis("");
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -179,14 +204,17 @@ export default function Home() {
 
             <button
               type="submit"
-              className="rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+              disabled={isSubmitting}
+              className="rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Request Alpha Access
+              {isSubmitting ? "Submitting..." : "Request Alpha Access"}
             </button>
 
             {showSuccessMessage ? (
               <p className="text-sm text-emerald-700">Thanks! We&apos;ll contact you soon.</p>
             ) : null}
+
+            {errorMessage ? <p className="text-sm text-rose-700">{errorMessage}</p> : null}
           </form>
         </section>
       </div>
