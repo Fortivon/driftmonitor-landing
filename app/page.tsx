@@ -82,9 +82,12 @@ export default function Home() {
             DriftMonitor helps developers detect schema drift and breaking response changes in external APIs before an
             integration fails in production.
           </p>
-          <button className="rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700">
-            Join the Private Alpha
-          </button>
+          <a
+            href="#private-alpha"
+            className="rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
+          >
+            Get API Alpha Access
+          </a>
         </section>
 
         <section className="space-y-6">
@@ -176,7 +179,82 @@ export default function Home() {
           </ul>
         </section>
 
-        <section className="rounded-lg border border-slate-200 bg-slate-50 px-6 py-10 text-center sm:px-10">
+        <section className="space-y-6 rounded-lg border border-slate-200 bg-white px-6 py-8 sm:px-10">
+          <h2 className="text-2xl font-semibold sm:text-3xl">Is DriftMonitor for you?</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-md border border-emerald-200 bg-emerald-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">Best fit for private alpha</p>
+              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">
+                <li>• You are a backend, integrations, or platform engineer, or a technical founder.</li>
+                <li>• You depend on third-party APIs or internal APIs that can change silently.</li>
+                <li>• You want to catch schema/response drift before customers or support do.</li>
+                <li>• You want a lightweight early warning signal for integration breakage.</li>
+              </ul>
+            </div>
+            <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-700">Not ideal yet</p>
+              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">
+                <li>• Teams looking for generic uptime monitoring.</li>
+                <li>• Non-technical users without API ownership.</li>
+                <li>• Teams expecting a fully polished dashboard workflow today.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h2 className="text-2xl font-semibold sm:text-3xl">How to test in 5 minutes</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Who this is for</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
+                Backend, integrations, and platform engineers who depend on third-party APIs and have been burned by
+                silent response changes.
+              </p>
+            </div>
+            <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Best first test</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
+                Pick one endpoint your team already relies on and run a few checks to confirm whether drift signals are
+                useful for your real incident risk.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">How to test in 5 minutes</p>
+            <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
+              <li>Request private alpha access using the form below.</li>
+              <li>
+                Open the API docs in Swagger at{" "}
+                <a
+                  href="https://api.driftmonitor.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium text-slate-900 underline decoration-slate-300 underline-offset-2"
+                >
+                  api.driftmonitor.app
+                </a>
+                .
+              </li>
+              <li>Create a monitor for one real endpoint your team already relies on (production or staging).</li>
+              <li>Run baseline and follow-up checks, then review detected schema differences.</li>
+            </ol>
+          </div>
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">What feedback I want</p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
+              Share one true positive and one noisy alert. Include the endpoint, what changed, and whether the drift
+              signal would have helped you act earlier in production.
+            </p>
+          </div>
+          <p className="text-sm text-slate-600">
+            Current onboarding is private alpha and API-first via Swagger, focused on validating useful drift signals
+            before wider rollout.
+          </p>
+        </section>
+
+        <section
+          id="private-alpha"
+          className="rounded-lg border border-slate-200 bg-slate-50 px-6 py-10 text-center sm:px-10"
+        >
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Private Alpha</p>
           <h2 className="mx-auto mt-3 max-w-3xl text-2xl font-semibold leading-tight sm:text-3xl">
             Get earlier visibility into the APIs your product depends on
