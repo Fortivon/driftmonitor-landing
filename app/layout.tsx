@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "DriftMonitor – Detect breaking changes in external APIs",
   description:
     "Monitor API responses, detect JSON schema drift, and catch breaking changes before they reach production.",
+  icons: {
+    icon: "/logo-driftmonitor-simbolo.png",
+    shortcut: "/logo-driftmonitor-simbolo.png",
+    apple: "/logo-driftmonitor-simbolo.png",
+  },
   alternates: {
     canonical: "/",
   },
