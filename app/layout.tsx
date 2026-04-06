@@ -7,9 +7,13 @@ export const metadata: Metadata = {
   description:
     "Monitor API responses, detect JSON schema drift, and catch breaking changes before they reach production.",
   icons: {
-    icon: "/logo-driftmonitor-simbolo.png",
-    shortcut: "/logo-driftmonitor-simbolo.png",
-    apple: "/logo-driftmonitor-simbolo.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/brand/logo-mark-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/brand/logo-mark-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/brand/logo-mark-192.png",
   },
   alternates: {
     canonical: "/",

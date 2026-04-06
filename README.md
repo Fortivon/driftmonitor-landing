@@ -13,20 +13,18 @@ The app runs on `http://localhost:3001` by default.
 
 ## Environment variables
 
-Create a local `.env.local` file:
+The current landing page does not require any environment variables for normal rendering.
+
+If you still want to use the legacy waitlist endpoint in `app/api/waitlist/route.ts`, add:
 
 ```bash
 RESEND_API_KEY=your_resend_api_key_here
 ```
 
-`RESEND_API_KEY` is required by `app/api/waitlist/route.ts` to send waitlist emails via Resend.
-
 ## Vercel deployment checklist
 
 - Framework preset: **Next.js**
 - Root directory: repository root
-- Environment variable in Vercel Project Settings:
-  - `RESEND_API_KEY`
 - Production domain: `https://driftmonitor.app`
-
-After setting `RESEND_API_KEY`, the waitlist form posts to `/api/waitlist` and sends submissions through Resend.
+- Optional environment variable in Vercel Project Settings:
+  - `RESEND_API_KEY` only if the legacy waitlist route is still needed

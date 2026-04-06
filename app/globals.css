@@ -16,3 +16,10 @@ body {
   padding: 0;
   min-height: 100%;
 }
+
+body {
+  background: #f8fafc;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

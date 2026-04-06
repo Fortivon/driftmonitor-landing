@@ -1,319 +1,535 @@
-"use client";
+import Image from "next/image";
+import type { ReactNode } from "react";
 
-import { FormEvent, useState } from "react";
+const appUrl = "https://app.driftmonitor.app";
+const docsUrl = "https://api.driftmonitor.app/docs";
 
-const problemPoints = [
-  "A provider changes a response shape without notice",
-  "Your integration passes tests, then fails in production",
-  "Customers notice missing data before your team does",
-  "You only find the change after debugging a live incident",
+const navigationItems = [
+  { label: "Product", href: "#product" },
+  { label: "API Docs", href: docsUrl, external: true },
 ];
 
-const flowSteps = [
-  "Choose an external API endpoint to monitor",
-  "DriftMonitor stores a JSON schema snapshot from the response",
-  "Later responses are compared against the baseline",
-  "Breaking drift is surfaced before it turns into an incident",
+const signalCards = [
+  {
+    title: "200 OK does not mean the contract is safe",
+    description:
+      "Third-party APIs often keep returning success while a field disappears, a type changes, or a nested object shifts shape underneath your integration.",
+  },
+  {
+    title: "Schema drift usually shows up late",
+    description:
+      "The first visible signal is often missing data, a broken workflow, or a support ticket after the provider change is already live.",
+  },
+  {
+    title: "Generic uptime checks miss this class of failure",
+    description:
+      "DriftMonitor is built for response and schema drift, not just whether an endpoint responds at all.",
+  },
 ];
 
-const credibilityItems = [
-  "Monitor endpoints on demand",
-  "Store JSON schema snapshots over time",
-  "Detect removed fields and type changes",
-  "Review snapshot history for each monitor",
-  "Track drift patterns across checks",
-  "Send drift events into an alert pipeline",
-  "Built on a multi-tenant cloud architecture",
+const workflowSteps = [
+  {
+    title: "Open the app",
+    description:
+      "Use the live sign-in flow to enter DriftMonitor and reach the current operator workspace.",
+  },
+  {
+    title: "Create a monitor and save a baseline",
+    description:
+      "Point DriftMonitor at a real endpoint your team already depends on and capture the response shape you expect.",
+  },
+  {
+    title: "Review drift and alert signals",
+    description:
+      "When responses change, inspect the drift summary, execution history, and alert evidence before customers feel it.",
+  },
+];
+
+const productViews = [
+  {
+    eyebrow: "Monitors workspace",
+    title: "See monitor health, cadence, drift state, and alert posture in one place",
+    description:
+      "The list stays operational: what changed recently, which monitor needs review, and where to drill in next.",
+    src: "/product-shots/monitors-list.png",
+    alt: "DriftMonitor monitors list showing monitor health, drift signal, alert signal, and cadence.",
+    width: 1600,
+    height: 1200,
+    priority: false,
+  },
+  {
+    eyebrow: "Execution history",
+    title: "Trace saved runs and review what happened before a drift turns into an incident",
+    description:
+      "Execution history gives teams a concrete record of recent checks instead of guessing when the response changed.",
+    src: "/product-shots/executions-history.png",
+    alt: "DriftMonitor execution history showing recent runs and execution context.",
+    width: 1600,
+    height: 2365,
+    priority: false,
+  },
+  {
+    eyebrow: "Alerts view",
+    title: "Keep delivery evidence and readable alert context attached to the monitor",
+    description:
+      "Alert review stays grounded in the same drift context your team needs to decide whether to investigate or route the issue.",
+    src: "/product-shots/alerts-view.png",
+    alt: "DriftMonitor alerts view showing alert delivery status and recent evidence.",
+    width: 1600,
+    height: 1200,
+    priority: false,
+  },
+];
+
+const capabilityItems = [
+  "Create and review monitors in the web product",
+  "Compare the latest response against a saved baseline",
+  "Surface breaking changes and warning-level drift separately",
+  "Inspect execution history for each monitored endpoint",
+  "Review alert delivery evidence alongside the drift context",
+  "Enter the live app through the current sign-in flow",
+];
+
+const bestFitItems = [
+  "Backend, integrations, and platform teams responsible for third-party API reliability",
+  "Teams depending on Stripe, Shopify, Slack, OpenAI, partner APIs, webhooks, or similar external contracts",
+  "Technical teams that want earlier warning when response shape changes silently",
+];
+
+const notForItems = [
+  "Teams looking for generic uptime monitoring",
+  "Non-technical stakeholders without ownership of the integration surface",
+  "Organizations expecting a broad enterprise workflow beyond the current alpha scope",
+];
+
+const testSteps = [
+  "Open the app and sign in to the current DriftMonitor workspace flow.",
+  "Choose one endpoint your team already relies on.",
+  "Create a monitor, save a baseline, and run follow-up checks.",
+  "Use the docs when you need API details, then review drift and alert evidence in the product.",
+];
+
+const productProofTags = [
+  "Baseline comparison",
+  "Readable drift summary",
+  "Execution history",
+  "Alert evidence",
 ];
 
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [apis, setApis] = useState("");
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (isSubmitting) {
-      return;
-    }
-
-    setShowSuccessMessage(false);
-    setErrorMessage("");
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email.trim(), apis: apis.trim() }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
-
-      setShowSuccessMessage(true);
-      setEmail("");
-      setApis("");
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("Something went wrong. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <main className="min-h-screen bg-white px-6 py-16 text-slate-900 sm:px-8 lg:px-12">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-20">
-        <section className="flex flex-col items-center gap-6 text-center">
-          <p className="text-sm font-medium text-slate-500">
-            For teams shipping integrations on top of Stripe, Shopify, Slack, OpenAI, and other third-party APIs
-          </p>
-          <h1 className="max-w-4xl text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
-            Catch silent API changes before they become customer-facing incidents.
-          </h1>
-          <p className="max-w-3xl text-base text-slate-600 sm:text-lg">
-            DriftMonitor helps developers detect schema drift and breaking response changes in external APIs before an
-            integration fails in production.
-          </p>
-          <a
-            href="#private-alpha"
-            className="rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
-          >
-            Get API Alpha Access
-          </a>
-        </section>
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(15,23,42,0.24),transparent_24%),linear-gradient(180deg,#cbd5e1_0%,#e2e8f0_10%,#f8fafc_30%,#e2e8f0_100%)] px-6 py-6 text-slate-900 sm:px-8 lg:px-12">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+        <header className="sticky top-4 z-20 rounded-2xl border border-slate-800/75 bg-[linear-gradient(180deg,rgba(2,6,23,0.96),rgba(15,23,42,0.96))] px-4 py-2.5 text-slate-200 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.82)] backdrop-blur sm:px-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <a href="#product" className="inline-flex items-center">
+              <Image
+                alt="DriftMonitor"
+                className="h-auto w-32 sm:w-36"
+                height={194}
+                priority
+                src="/brand/logo-full-dark.png"
+                width={325}
+              />
+            </a>
 
-        <section className="space-y-6">
-          <h2 className="text-2xl font-semibold sm:text-3xl">External APIs rarely break loudly</h2>
-          <ul className="grid gap-3 text-slate-700 sm:grid-cols-2">
-            {problemPoints.map((point) => (
-              <li
-                key={point}
-                className="rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm sm:text-base"
+            <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+              <nav aria-label="Primary" className="flex flex-wrap items-center gap-1 text-sm font-medium">
+                {navigationItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noreferrer" : undefined}
+                    className="rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/7 hover:text-white"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+
+              <a
+                href={appUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
               >
-                • {point}
-              </li>
-            ))}
-          </ul>
-          <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            Most third-party API changes do not announce themselves with a clean outage. A field disappears, a type
-            changes, or a nested object shifts shape, and the first real signal is often a broken workflow, bad data, or
-            a support ticket from a customer.
-          </p>
-        </section>
+                Open app
+              </a>
+            </div>
+          </div>
+        </header>
 
-        <section className="space-y-6">
-          <h2 className="text-2xl font-semibold sm:text-3xl">How it works</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {flowSteps.map((step, index) => (
-              <div key={step} className="rounded-md border border-slate-200 bg-white p-5">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Step {index + 1}</p>
-                <p className="text-sm font-medium text-slate-800 sm:text-base">{step}</p>
+        <section
+          id="product"
+          className="overflow-hidden rounded-[2rem] border border-slate-800 bg-[linear-gradient(180deg,rgba(2,6,23,0.96),rgba(15,23,42,0.96))] p-6 text-slate-100 shadow-[0_28px_80px_-40px_rgba(15,23,42,0.85)] sm:p-8 lg:p-10"
+        >
+          <div className="grid items-center gap-10 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-200/80">
+                  API drift monitoring for teams shipping on top of external APIs
+                </p>
+                <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
+                  Catch silent API changes before they become incidents.
+                </h1>
+                <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+                  Monitor response drift, compare against a baseline, and surface breaking changes before customers feel
+                  them. DriftMonitor is built for teams depending on third-party APIs, not generic uptime checks.
+                </p>
               </div>
-            ))}
-          </div>
-          <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            The goal is simple: make response drift visible early enough that your team can fix the integration before
-            users discover the problem for you.
-          </p>
-        </section>
 
-        <section className="space-y-6">
-          <h2 className="text-2xl font-semibold sm:text-3xl">Example schema drift</h2>
-          <div className="grid gap-4 lg:grid-cols-2">
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-5">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Baseline schema</p>
-              <div className="rounded-md border border-slate-200 bg-white p-4 font-mono text-sm leading-6 text-slate-800">
-                <p>user.id: string</p>
-                <p>user.name: string</p>
-                <p>user.email: string</p>
-              </div>
-            </div>
-            <div className="rounded-lg border border-rose-200 bg-rose-50 p-5">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-rose-500">New response</p>
-              <div className="rounded-md border border-rose-200 bg-white p-4 font-mono text-sm leading-6 text-slate-800">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-rose-700">
-                  <p className="font-semibold">user.id: number</p>
-                  <span className="rounded-full border border-rose-300 bg-rose-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-rose-700">
-                    breaking change
-                  </span>
-                </div>
-                <p>user.name: string</p>
-                <p>user.email: string</p>
-              </div>
-            </div>
-          </div>
-          <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            If your code expects <span className="font-mono">user.id</span> to be a string and the provider starts
-            returning a number, the API may still respond with <span className="font-mono">200 OK</span> while your
-            integration breaks downstream. DriftMonitor is built to catch that kind of change before it reaches
-            customers.
-          </p>
-        </section>
-
-        <section className="space-y-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Already working</p>
-          <h2 className="max-w-3xl text-2xl font-semibold leading-tight sm:text-3xl">
-            Built for teams that need early warning, not more guesswork
-          </h2>
-          <p className="max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            DriftMonitor already supports the core monitoring workflow needed to spot response drift before it turns into
-            user-visible failures.
-          </p>
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {credibilityItems.map((item) => (
-              <li
-                key={item}
-                className="rounded-md border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="space-y-6 rounded-lg border border-slate-200 bg-white px-6 py-8 sm:px-10">
-          <h2 className="text-2xl font-semibold sm:text-3xl">Is DriftMonitor for you?</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-md border border-emerald-200 bg-emerald-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">Best fit for private alpha</p>
-              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">
-                <li>• You are a backend, integrations, or platform engineer, or a technical founder.</li>
-                <li>• You depend on third-party APIs or internal APIs that can change silently.</li>
-                <li>• You want to catch schema/response drift before customers or support do.</li>
-                <li>• You want a lightweight early warning signal for integration breakage.</li>
-              </ul>
-            </div>
-            <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-700">Not ideal yet</p>
-              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">
-                <li>• Teams looking for generic uptime monitoring.</li>
-                <li>• Non-technical users without API ownership.</li>
-                <li>• Teams expecting a fully polished dashboard workflow today.</li>
-              </ul>
-            </div>
-          </div>
-
-          <h2 className="text-2xl font-semibold sm:text-3xl">How to test in 5 minutes</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Who this is for</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
-                Backend, integrations, and platform engineers who depend on third-party APIs and have been burned by
-                silent response changes.
-              </p>
-            </div>
-            <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Best first test</p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
-                Pick one endpoint your team already relies on and run a few checks to confirm whether drift signals are
-                useful for your real incident risk.
-              </p>
-            </div>
-          </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">How to test in 5 minutes</p>
-            <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
-              <li>Request private alpha access using the form below.</li>
-              <li>
-                Open the API docs in Swagger at{" "}
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
-                  href="https://api.driftmonitor.app/"
+                  href={appUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-medium text-slate-950 transition hover:bg-slate-200"
+                >
+                  Open app
+                </a>
+                <a
+                  href={docsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-md border border-slate-700 bg-slate-900/70 px-6 py-3 text-sm font-medium text-slate-100 transition hover:border-slate-500 hover:bg-slate-900"
+                >
+                  API docs
+                </a>
+              </div>
+
+              <p className="max-w-2xl text-sm leading-6 text-slate-400">
+                Sign in to an existing workspace or create an account from the live product entry flow. API docs remain
+                close by when you need contract details or setup context.
+              </p>
+
+              <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/60 px-4 py-4 text-sm leading-6 text-slate-300">
+                <p className="font-medium text-slate-100">Alpha note</p>
+                <p className="mt-2">
+                  DriftMonitor is still in an early product stage, with private onboarding and an evolving dashboard,
+                  but the current web app, login flow, and operator workflow are already live.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {productProofTags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <ScreenshotFrame
+              alt="DriftMonitor monitor detail showing drift summary, baseline comparison, and execution context."
+              eyebrow="Live product proof"
+              priority
+              src="/product-shots/monitor-detail-drift-summary.png"
+              title="Real monitor detail with drift summary"
+            />
+          </div>
+        </section>
+
+        <section className="grid gap-6 rounded-[2rem] border border-slate-200/80 bg-white/85 p-6 shadow-[0_18px_50px_-42px_rgba(15,23,42,0.4)] sm:p-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+          <div className="space-y-4">
+            <SectionEyebrow>Why this matters</SectionEyebrow>
+            <h2 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-slate-950">
+              External APIs rarely fail with a clean outage.
+            </h2>
+            <p className="max-w-2xl text-base leading-7 text-slate-600">
+              More often, everything still returns <span className="font-mono text-[0.95em] text-slate-900">200 OK</span>
+              {" "}
+              while a field disappears, a type changes, or a nested object drifts out of the shape your code expects.
+              That is where DriftMonitor is meant to help.
+            </p>
+          </div>
+
+          <div className="grid gap-3">
+            {signalCards.map((card) => (
+              <div
+                key={card.title}
+                className="rounded-2xl border border-slate-200 bg-slate-50/90 px-5 py-4 shadow-sm"
+              >
+                <h3 className="text-sm font-semibold text-slate-900 sm:text-base">{card.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{card.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <div className="space-y-3">
+            <SectionEyebrow>Product in action</SectionEyebrow>
+            <h2 className="max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-slate-950">
+              Real product proof, centered on drift visibility instead of abstract promise.
+            </h2>
+            <p className="max-w-3xl text-base leading-7 text-slate-600">
+              DriftMonitor keeps baseline comparison, readable drift review, and follow-up evidence close to the monitor
+              that owns the risk.
+            </p>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+            <ProductProofCard {...productViews[0]} className="lg:min-h-full" />
+
+            <div className="grid gap-6">
+              <ProductProofCard {...productViews[1]} />
+              <ProductProofCard {...productViews[2]} />
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-6 rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_20px_60px_-48px_rgba(15,23,42,0.42)] sm:p-8">
+          <div className="space-y-3">
+            <SectionEyebrow>How it works</SectionEyebrow>
+            <h2 className="max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-slate-950">
+              A simple workflow for catching response drift earlier.
+            </h2>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3">
+            {workflowSteps.map((step, index) => (
+              <div key={step.title} className="rounded-2xl border border-slate-200 bg-slate-50/80 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Step {index + 1}</p>
+                <h3 className="mt-3 text-lg font-semibold text-slate-950">{step.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-slate-900 bg-slate-950 px-6 py-8 text-slate-100 shadow-[0_30px_90px_-55px_rgba(15,23,42,0.9)] sm:px-8 sm:py-10">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]">
+            <div className="space-y-4">
+              <SectionEyebrow className="text-slate-400">What teams can already do</SectionEyebrow>
+              <h2 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-white">
+                Enough product depth to test DriftMonitor on a real dependency now.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-300">
+                The current alpha is focused, but it is already grounded in a real operator workflow instead of a
+                concept-only page.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              {capabilityItems.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-4 text-sm leading-6 text-slate-200"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-[2rem] border border-emerald-200 bg-emerald-50/70 p-6 shadow-[0_18px_50px_-44px_rgba(5,150,105,0.35)] sm:p-8">
+            <SectionEyebrow className="text-emerald-700">Who it is for</SectionEyebrow>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-slate-950">
+              Best fit for backend, integrations, and platform teams.
+            </h2>
+            <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-700 sm:text-base">
+              {bestFitItems.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-600" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-[2rem] border border-amber-200 bg-amber-50/70 p-6 shadow-[0_18px_50px_-44px_rgba(217,119,6,0.3)] sm:p-8">
+            <SectionEyebrow className="text-amber-700">Scope boundary</SectionEyebrow>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-slate-950">
+              Honest fit matters more than broad positioning.
+            </h2>
+            <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-700 sm:text-base">
+              {notForItems.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_20px_60px_-48px_rgba(15,23,42,0.42)] sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div className="space-y-4">
+              <SectionEyebrow>How to test in 5 minutes</SectionEyebrow>
+              <h2 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-slate-950">
+                Start with one endpoint your team already trusts and depends on.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-600">
+                The fastest way to evaluate DriftMonitor is to point it at a real dependency, save a baseline, and see
+                whether the signal would help your team act earlier.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <ol className="space-y-3">
+                {testSteps.map((step, index) => (
+                  <li key={step} className="flex gap-4 rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-950 text-sm font-semibold text-white">
+                      {index + 1}
+                    </span>
+                    <span className="pt-1 text-sm leading-6 text-slate-700 sm:text-base">{step}</span>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 text-sm leading-6 text-slate-600">
+                API docs are available at{" "}
+                <a
+                  href={docsUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="font-medium text-slate-900 underline decoration-slate-300 underline-offset-2"
                 >
-                  api.driftmonitor.app
+                  api.driftmonitor.app/docs
                 </a>
-                .
-              </li>
-              <li>Create a monitor for one real endpoint your team already relies on (production or staging).</li>
-              <li>Run baseline and follow-up checks, then review detected schema differences.</li>
-            </ol>
+                . The alpha scope is still intentionally focused, but the current workflow already covers monitor setup,
+                drift review, execution history, and alert evidence in the product.
+              </div>
+            </div>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">What feedback I want</p>
-            <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
-              Share one true positive and one noisy alert. Include the endpoint, what changed, and whether the drift
-              signal would have helped you act earlier in production.
-            </p>
-          </div>
-          <p className="text-sm text-slate-600">
-            Current onboarding is private alpha and API-first via Swagger, focused on validating useful drift signals
-            before wider rollout.
-          </p>
         </section>
 
-        <section
-          id="private-alpha"
-          className="rounded-lg border border-slate-200 bg-slate-50 px-6 py-10 text-center sm:px-10"
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Private Alpha</p>
-          <h2 className="mx-auto mt-3 max-w-3xl text-2xl font-semibold leading-tight sm:text-3xl">
-            Get earlier visibility into the APIs your product depends on
-          </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-            DriftMonitor is in private alpha for developers and small teams with real third-party API dependencies. Join
-            if you want to help shape the product and catch integration risk earlier in your stack.
-          </p>
-          <p className="mt-3 text-xs text-slate-500 sm:text-sm">
-            Current alpha access is API-only via Swagger, with a small group of design partners.
-          </p>
-
-          <form onSubmit={handleSubmit} className="mx-auto mt-8 flex w-full max-w-xl flex-col gap-5 text-left">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-medium text-slate-700">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-                className="rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
-              />
+        <section className="rounded-[2rem] border border-slate-800 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))] px-6 py-10 text-slate-100 shadow-[0_28px_90px_-48px_rgba(15,23,42,0.88)] sm:px-8 lg:px-10">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
+            <div className="space-y-4">
+              <SectionEyebrow className="text-slate-400">Open DriftMonitor</SectionEyebrow>
+              <h2 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-white">
+                Use the live product, then keep the docs close for implementation detail.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-300">
+                DriftMonitor now has a real app entry path. Use the sign-in flow to reach the product, and keep the API
+                docs nearby when you need contract-level guidance.
+              </p>
+              <p className="text-sm leading-6 text-slate-400">
+                Alpha note: onboarding remains selective and the dashboard is still evolving, but the current app is no
+                longer just a request-access concept page.
+              </p>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="apis" className="text-sm font-medium text-slate-700">
-                Which APIs do you integrate with?
-              </label>
-              <input
-                id="apis"
-                type="text"
-                placeholder="Stripe, Shopify, Slack, OpenAI..."
-                value={apis}
-                onChange={(event) => setApis(event.target.value)}
-                required
-                className="rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300"
-              />
+            <div className="flex h-full flex-col justify-between rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5 shadow-sm sm:p-6">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-white">Choose the path that matches what you need.</h3>
+                <div className="grid gap-3">
+                  <a
+                    href={appUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-medium text-slate-950 transition hover:bg-slate-200"
+                  >
+                    Sign in to the app
+                  </a>
+                  <a
+                    href={docsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center rounded-md border border-slate-700 bg-slate-950 px-6 py-3 text-sm font-medium text-slate-100 transition hover:border-slate-500 hover:bg-slate-900"
+                  >
+                    Open API docs
+                  </a>
+                </div>
+              </div>
+
+              <p className="mt-5 text-sm leading-6 text-slate-400">
+                New workspaces can start from the live auth entry flow. Existing teams can sign in directly and continue
+                monitor review inside the product.
+              </p>
             </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="rounded-md bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {isSubmitting ? "Submitting..." : "Request Private Alpha Access"}
-            </button>
-
-            {showSuccessMessage ? (
-              <p className="text-sm text-emerald-700">Thanks! We&apos;ll contact you soon.</p>
-            ) : null}
-
-            {errorMessage ? <p className="text-sm text-rose-700">{errorMessage}</p> : null}
-          </form>
+          </div>
         </section>
       </div>
     </main>
+  );
+}
+
+type ProductProofCardProps = {
+  alt: string;
+  className?: string;
+  description: string;
+  eyebrow: string;
+  height: number;
+  priority: boolean;
+  src: string;
+  title: string;
+  width: number;
+};
+
+function ProductProofCard({
+  alt,
+  className,
+  description,
+  eyebrow,
+  height,
+  priority,
+  src,
+  title,
+  width,
+}: ProductProofCardProps) {
+  return (
+    <article
+      className={`overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white/95 shadow-[0_18px_50px_-42px_rgba(15,23,42,0.45)] ${className ?? ""}`}
+    >
+      <div className="space-y-3 px-5 py-5 sm:px-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{eyebrow}</p>
+        <h3 className="text-xl font-semibold leading-tight text-slate-950">{title}</h3>
+        <p className="text-sm leading-6 text-slate-600">{description}</p>
+      </div>
+      <div className="border-t border-slate-200 bg-[linear-gradient(180deg,rgba(226,232,240,0.78),rgba(248,250,252,0.98))] p-3 sm:p-4">
+        <div className="overflow-hidden rounded-[1.25rem] border border-slate-800 bg-slate-950 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.7)]">
+          <Image alt={alt} className="h-auto w-full" height={height} priority={priority} src={src} width={width} />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+type ScreenshotFrameProps = {
+  alt: string;
+  eyebrow: string;
+  priority: boolean;
+  src: string;
+  title: string;
+};
+
+function ScreenshotFrame({ alt, eyebrow, priority, src, title }: ScreenshotFrameProps) {
+  return (
+    <div className="rounded-[1.75rem] border border-slate-800 bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(2,6,23,0.98))] p-3 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.8)] sm:p-4">
+      <div className="mb-4 flex items-center justify-between gap-4 px-2 sm:px-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{eyebrow}</p>
+          <p className="mt-1 text-sm font-medium text-slate-200">{title}</p>
+        </div>
+        <div className="hidden items-center gap-1.5 sm:flex">
+          <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+        </div>
+      </div>
+      <div className="overflow-hidden rounded-[1.35rem] border border-slate-800 bg-slate-950">
+        <div className="relative aspect-[4/3]">
+          <Image alt={alt} className="object-cover object-top" fill priority={priority} sizes="(min-width: 1280px) 52vw, 100vw" src={src} />
+        </div>
+      </div>
+      <p className="px-2 pt-4 text-sm leading-6 text-slate-400 sm:px-3">
+        Baseline comparison, grouped drift changes, and execution context from the current DriftMonitor web app.
+      </p>
+    </div>
+  );
+}
+
+function SectionEyebrow({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <p className={`text-xs font-semibold uppercase tracking-[0.22em] ${className ?? "text-slate-500"}`}>{children}</p>
   );
 }
