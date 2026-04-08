@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { ExpandableScreenshot } from "@/components/expandable-screenshot";
 
 const appUrl = "https://app.driftmonitor.app";
 const docsUrl = "https://api.driftmonitor.app/docs";
@@ -51,21 +52,21 @@ const productViews = [
     title: "See monitor health, cadence, drift state, and alert posture in one place",
     description:
       "The list stays operational: what changed recently, which monitor needs review, and where to drill in next.",
-    src: "/product-shots/monitors-list.png",
+    src: "/product-shots/app-monitors-active-overview.png",
     alt: "DriftMonitor monitors list showing monitor health, drift signal, alert signal, and cadence.",
-    width: 1600,
-    height: 1200,
+    width: 1440,
+    height: 900,
     priority: false,
   },
   {
-    eyebrow: "Execution history",
-    title: "Trace saved runs and review what happened before a drift turns into an incident",
+    eyebrow: "Drift review",
+    title: "Review the exact breaking change before the provider update turns into customer impact",
     description:
-      "Execution history gives teams a concrete record of recent checks instead of guessing when the response changed.",
-    src: "/product-shots/executions-history.png",
-    alt: "DriftMonitor execution history showing recent runs and execution context.",
-    width: 1600,
-    height: 2365,
+      "The drift workspace makes the change concrete with severity, affected area, and readable field-level evidence.",
+    src: "/product-shots/app-drift-breaking-change.png",
+    alt: "DriftMonitor drift workspace showing a breaking field removal and a warning field addition.",
+    width: 1440,
+    height: 900,
     priority: false,
   },
   {
@@ -73,10 +74,10 @@ const productViews = [
     title: "Keep delivery evidence and readable alert context attached to the monitor",
     description:
       "Alert review stays grounded in the same drift context your team needs to decide whether to investigate or route the issue.",
-    src: "/product-shots/alerts-view.png",
+    src: "/product-shots/app-alerts-retrying-delivery.png",
     alt: "DriftMonitor alerts view showing alert delivery status and recent evidence.",
-    width: 1600,
-    height: 1200,
+    width: 1440,
+    height: 900,
     priority: false,
   },
 ];
@@ -118,19 +119,12 @@ const productProofTags = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(15,23,42,0.24),transparent_24%),linear-gradient(180deg,#cbd5e1_0%,#e2e8f0_10%,#f8fafc_30%,#e2e8f0_100%)] px-6 py-6 text-slate-900 sm:px-8 lg:px-12">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <header className="sticky top-4 z-20 rounded-2xl border border-slate-800/75 bg-[linear-gradient(180deg,rgba(2,6,23,0.96),rgba(15,23,42,0.96))] px-4 py-2.5 text-slate-200 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.82)] backdrop-blur sm:px-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(15,23,42,0.24),transparent_24%),linear-gradient(180deg,#cbd5e1_0%,#e2e8f0_10%,#f8fafc_30%,#e2e8f0_100%)] px-6 py-5 text-slate-900 sm:px-8 lg:px-12">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 sm:gap-7">
+        <header className="sticky top-3 z-20 rounded-xl border border-slate-800/80 bg-[linear-gradient(180deg,rgba(2,6,23,0.94),rgba(15,23,42,0.94))] px-3 py-2 text-slate-200 shadow-[0_18px_50px_-38px_rgba(15,23,42,0.82)] backdrop-blur sm:px-4">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
             <a href="#product" className="inline-flex items-center">
-              <Image
-                alt="DriftMonitor"
-                className="h-auto w-32 sm:w-36"
-                height={194}
-                priority
-                src="/brand/logo-full-dark.png"
-                width={325}
-              />
+              <BrandLockup priority />
             </a>
 
             <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
@@ -141,7 +135,7 @@ export default function Home() {
                     href={item.href}
                     target={item.external ? "_blank" : undefined}
                     rel={item.external ? "noreferrer" : undefined}
-                    className="rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/7 hover:text-white"
+                    className="rounded-md px-3 py-1.5 text-slate-300 transition hover:bg-white/7 hover:text-white"
                   >
                     {item.label}
                   </a>
@@ -152,7 +146,7 @@ export default function Home() {
                 href={appUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
+                className="inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
               >
                 Open app
               </a>
@@ -162,15 +156,15 @@ export default function Home() {
 
         <section
           id="product"
-          className="overflow-hidden rounded-[2rem] border border-slate-800 bg-[linear-gradient(180deg,rgba(2,6,23,0.96),rgba(15,23,42,0.96))] p-6 text-slate-100 shadow-[0_28px_80px_-40px_rgba(15,23,42,0.85)] sm:p-8 lg:p-10"
+          className="overflow-hidden rounded-[2rem] border border-slate-800 bg-[linear-gradient(180deg,rgba(2,6,23,0.96),rgba(15,23,42,0.96))] p-6 text-slate-100 shadow-[0_28px_80px_-40px_rgba(15,23,42,0.85)] sm:p-7 lg:p-9"
         >
-          <div className="grid items-center gap-10 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
-            <div className="space-y-6">
-              <div className="space-y-4">
+          <div className="grid items-center gap-8 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+            <div className="space-y-5">
+              <div className="space-y-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-200/80">
                   API drift monitoring for teams shipping on top of external APIs
                 </p>
-                <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
+                <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-white sm:text-[3.2rem]">
                   Catch silent API changes before they become incidents.
                 </h1>
                 <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
@@ -227,7 +221,7 @@ export default function Home() {
               alt="DriftMonitor monitor detail showing drift summary, baseline comparison, and execution context."
               eyebrow="Live product proof"
               priority
-              src="/product-shots/monitor-detail-drift-summary.png"
+              src="/product-shots/app-monitor-detail-drift-summary-v02.png"
               title="Real monitor detail with drift summary"
             />
           </div>
@@ -272,13 +266,10 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-            <ProductProofCard {...productViews[0]} className="lg:min-h-full" />
-
-            <div className="grid gap-6">
-              <ProductProofCard {...productViews[1]} />
-              <ProductProofCard {...productViews[2]} />
-            </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <ProductProofCard {...productViews[0]} className="lg:col-span-2" />
+            <ProductProofCard {...productViews[1]} />
+            <ProductProofCard {...productViews[2]} />
           </div>
         </section>
 
@@ -453,6 +444,33 @@ export default function Home() {
   );
 }
 
+type BrandLockupProps = {
+  priority?: boolean;
+};
+
+function BrandLockup({ priority = false }: BrandLockupProps) {
+  return (
+    <span className="inline-flex items-center gap-2 text-slate-50">
+      <span className="relative flex h-8 w-[1.95rem] shrink-0 items-center justify-center">
+        <span className="absolute inset-x-0.5 bottom-1 top-1 rounded-full bg-sky-300/12 blur-md" />
+        <Image
+          alt=""
+          aria-hidden="true"
+          className="relative h-auto w-full drop-shadow-[0_10px_18px_rgba(14,165,233,0.22)]"
+          height={114}
+          priority={priority}
+          src="/brand/logo-mark.png"
+          width={124}
+        />
+      </span>
+      <span className="flex items-center text-[1.01rem] font-semibold tracking-[-0.04em] text-white sm:text-[1.06rem]">
+        <span>Drift</span>
+        <span className="text-slate-300">Monitor</span>
+      </span>
+    </span>
+  );
+}
+
 type ProductProofCardProps = {
   alt: string;
   className?: string;
@@ -485,10 +503,23 @@ function ProductProofCard({
         <h3 className="text-xl font-semibold leading-tight text-slate-950">{title}</h3>
         <p className="text-sm leading-6 text-slate-600">{description}</p>
       </div>
-      <div className="border-t border-slate-200 bg-[linear-gradient(180deg,rgba(226,232,240,0.78),rgba(248,250,252,0.98))] p-3 sm:p-4">
-        <div className="overflow-hidden rounded-[1.25rem] border border-slate-800 bg-slate-950 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.7)]">
-          <Image alt={alt} className="h-auto w-full" height={height} priority={priority} src={src} width={width} />
-        </div>
+      <div className="border-t border-slate-200 bg-[linear-gradient(180deg,rgba(241,245,249,0.92),rgba(248,250,252,0.99))] p-4 sm:p-5">
+        <ExpandableScreenshot alt={alt} height={height} src={src} title={title} width={width}>
+          <div className="overflow-hidden rounded-[1.2rem] border border-slate-300 bg-slate-950 shadow-[0_20px_38px_-28px_rgba(15,23,42,0.42)]">
+              <Image
+                alt={alt}
+                className="h-auto w-full"
+                height={height}
+                priority={priority}
+                sizes="(min-width: 1024px) 44vw, 100vw"
+                src={src}
+                width={width}
+              />
+          </div>
+        </ExpandableScreenshot>
+        <p className="px-1 pt-3 text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+          Click screenshot to inspect full size
+        </p>
       </div>
     </article>
   );
@@ -510,17 +541,23 @@ function ScreenshotFrame({ alt, eyebrow, priority, src, title }: ScreenshotFrame
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{eyebrow}</p>
           <p className="mt-1 text-sm font-medium text-slate-200">{title}</p>
         </div>
-        <div className="hidden items-center gap-1.5 sm:flex">
-          <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-        </div>
+        <p className="hidden text-[0.7rem] font-medium uppercase tracking-[0.18em] text-slate-500 sm:block">
+          Current web app
+        </p>
       </div>
-      <div className="overflow-hidden rounded-[1.35rem] border border-slate-800 bg-slate-950">
-        <div className="relative aspect-[4/3]">
-          <Image alt={alt} className="object-cover object-top" fill priority={priority} sizes="(min-width: 1280px) 52vw, 100vw" src={src} />
+      <ExpandableScreenshot alt={alt} height={900} src={src} title={title} width={1440}>
+        <div className="overflow-hidden rounded-[1.3rem] border border-slate-700/80 bg-slate-950 shadow-[0_28px_56px_-36px_rgba(15,23,42,0.78)]">
+            <Image
+              alt={alt}
+              className="h-auto w-full"
+              height={900}
+              priority={priority}
+              sizes="(min-width: 1280px) 52vw, 100vw"
+              src={src}
+              width={1440}
+            />
         </div>
-      </div>
+      </ExpandableScreenshot>
       <p className="px-2 pt-4 text-sm leading-6 text-slate-400 sm:px-3">
         Baseline comparison, grouped drift changes, and execution context from the current DriftMonitor web app.
       </p>
